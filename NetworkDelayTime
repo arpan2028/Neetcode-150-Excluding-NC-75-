@@ -1,0 +1,72 @@
+#Using Djikstra Approach
+from collections import defaultdict
+import heapq
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        """
+        :type times: List[List[int]]
+        :type n: int
+        :type k: int
+        :rtype: int
+        """
+        # Step 1: Create an adjacency list with weights
+        adj = defaultdict(list)
+        for u, v, w in times:
+            adj[u].append((v, w))
+        
+        # Step 2: Use a min-heap (priority queue) to store (time, node)
+        heap = [(0, k)]
+        visited = {}
+        
+        while heap:
+            time, node = heapq.heappop(heap)
+            if node in visited:
+                continue
+            visited[node] = time
+            for nei, wt in adj[node]:
+                if nei not in visited:
+                    heapq.heappush(heap, (time + wt, nei))
+        
+        # Step 3: Check if all nodes were visited
+        if len(visited) == n:
+            return max(visited.values())
+        return -1
+
+        max_time = max(dist[1:])  # index 0 is dummy
+        return max_time if max_time != float('inf') else -1
+
+Time complexity - O((N + E) log N)
+Space complexity - O((N + E)
+
+
+#Using dfs 
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        adj = defaultdict(list)
+        for u, v, w in times:
+            adj[u].append((v, w))
+        
+        # Sort neighbors to potentially help early pruning
+        for node in adj:
+            adj[node].sort(key=lambda x: x[1])
+
+        # Store shortest time to each node
+        dist = [float('inf')] * (n + 1)
+        
+        def dfs(node, elapsed):
+            if elapsed >= dist[node]:
+                return
+            dist[node] = elapsed
+            for nei, weight in adj[node]:
+                dfs(nei, elapsed + weight)
+
+        dfs(k, 0)
+        
+        max_time = max(dist[1:])  # index 0 is dummy
+        return max_time if max_time != float('inf') else -1
+
+Time complexity - O(N + E)
+Space complexity - O((N + E)
