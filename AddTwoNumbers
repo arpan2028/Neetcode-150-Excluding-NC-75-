@@ -30,6 +30,9 @@ class Solution(object):
                 l2 = l2.next
         return dummy.next
 
+TC - O(N)
+SC - O(N), including output
+
 #UMPIRE
 #Understand -  We understood the problem
 #Match - Linked list problem
