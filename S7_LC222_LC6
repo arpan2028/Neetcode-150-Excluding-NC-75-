@@ -1,0 +1,60 @@
+# Count Complete Tree Nodes
+class Solution(object):
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        #UMPIRE
+        #Understand - Return the no of nodes in the tree
+        #Matching - Tree problem
+        #Plan - 
+        """
+        return 0 if not node
+        traverse to left or right
+        return 1 + left + right
+        """
+    
+        if not root:           
+            return 0
+        
+        left = self.countNodes(root.left)
+        right = self.countNodes(root.right)
+        
+        return 1 + left + right
+
+
+#Zigzag Conversion(Fixed code)
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows >= len(s):
+            return s
+        
+        hashm = {}  # maps row index to list of characters
+        i = 0       # row index
+        count = 0   # index in input string
+        flag = True # True = going down, False = going up
+
+        while count < len(s):
+            hashm[i] = hashm.get(i, []) + [s[count]]
+            count += 1
+
+            # Change direction if we hit top or bottom
+            if i == 0:
+                flag = True
+            elif i == numRows - 1:
+                flag = False
+
+            # Move to next row
+            if flag:
+                i += 1
+            else:
+                i -= 1
+
+        # Build final result from hashm
+        result = ""
+        for row in range(numRows):
+            if row in hashm:
+                result += ''.join(hashm[row])
+
+        return result
